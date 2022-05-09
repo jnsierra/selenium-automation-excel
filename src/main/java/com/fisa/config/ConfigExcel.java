@@ -15,7 +15,7 @@ import java.io.IOException;
 @Configuration
 public class ConfigExcel {
 
-    private String file;
+    private String file = "/Users/sierraj/fisa/repositories/excel-automation/Book1.xlsx";
 
     @Bean("WorkbookBean")
     @Scope("singleton")

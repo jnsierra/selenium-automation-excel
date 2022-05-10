@@ -1,6 +1,7 @@
 package com.fisa.service.impl;
 
 import com.fisa.dto.StepAutomationDTO;
+import com.fisa.enumeration.TypeAdditionalWait;
 import com.fisa.enumeration.TypeFindByEnum;
 import com.fisa.service.ManageWaits;
 import org.openqa.selenium.By;
@@ -32,7 +33,7 @@ public class ManageWaitsImpl implements ManageWaits {
     public Optional<WebElement> waitAndReturnElement(StepAutomationDTO stepAutomationDTO) throws InterruptedException {
         sleepTime(stepAutomationDTO);
         WebElement elemnt = this.waitFluent(stepAutomationDTO);
-        Boolean response = this.generateExplicit(stepAutomationDTO.getTimeAdditional(), elemnt);
+        Boolean response = this.generateExplicit(stepAutomationDTO.getTimeAdditional(), elemnt,stepAutomationDTO);
         if(response)
             return Optional.of(elemnt);
         return Optional.empty();
@@ -61,9 +62,11 @@ public class ManageWaitsImpl implements ManageWaits {
         return usernameElement;
     }
 
-    private Boolean generateExplicit(Long timeOut, WebElement element)throws InterruptedException{
-        WebDriverWait waitT = new WebDriverWait(driver, timeOut);
-        waitT.until(ExpectedConditions.elementToBeClickable(element));
+    private Boolean generateExplicit(Long timeOut, WebElement element, StepAutomationDTO step)throws InterruptedException{
+        if(TypeAdditionalWait.CLICKABLE.equals(step.getAdditionalTypeWait())){
+            WebDriverWait waitT = new WebDriverWait(driver, timeOut);
+            waitT.until(ExpectedConditions.elementToBeClickable(element));
+        }
         Thread.sleep(500);
         return Boolean.TRUE;
     }

@@ -1,8 +1,0 @@
-com/fisa/enumeration/TypeFindByEnum.class
-com/fisa/dto/StepAutomationDTO.class
-com/fisa/service/impl/ManageExcelImpl.class
-com/fisa/service/impl/ExecuteImpl.class
-com/fisa/service/ManageExcel.class
-com/fisa/config/ConfigExcel.class
-com/fisa/SpringApp.class
-com/fisa/service/Execute.class

@@ -4,8 +4,6 @@ import com.fisa.enumeration.TypeAdditionalWait;
 import com.fisa.enumeration.TypeFindByEnum;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Builder @Data
 public class StepAutomationDTO {
@@ -17,5 +15,11 @@ public class StepAutomationDTO {
     private Long repeatTime;
     private TypeAdditionalWait additionalTypeWait;
     private Long timeAdditional;
+    private String input;
+    private String labelAccion;
+    private Long sleepBefore;
+    private String additionalInput;
+    private String requiered;
+    private String extractInformation;
 
 }

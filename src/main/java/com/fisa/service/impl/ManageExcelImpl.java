@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.DoublePredicate;
 
 @Service
 public class ManageExcelImpl implements ManageExcel {
@@ -39,9 +38,14 @@ public class ManageExcelImpl implements ManageExcel {
                     .repeatTime(getLongValueCell(i,4))
                     .additionalTypeWait(TypeAdditionalWait.DEFAULT.getEnum(getStringValueCell(i,5)))
                     .timeAdditional(getLongValueCell(i,6))
+                    .input(getStringOrNumericValue(i, 7))
+                    .labelAccion(getStringValueCell(i,8))
+                    .sleepBefore(getLongValueCell(i, 9))
+                    .additionalInput(getStringValueCell(i,10))
+                    .requiered(getStringValueCell(i,11))
+                    .extractInformation(getStringValueCell(i,12))
                     .build();
             listOfAutomation.add(step);
-            System.out.println("Test: " + step);
         }
         return listOfAutomation;
     }
@@ -65,4 +69,13 @@ public class ManageExcelImpl implements ManageExcel {
         return (long) valor;
     }
 
+    private String getStringOrNumericValue(int row, int column){
+        String value = "";
+        try {
+            value = getStringValueCell(row, column);
+        }catch (Exception e){
+            value = getLongValueCell(row, column).toString();
+        }
+        return value;
+    }
 }

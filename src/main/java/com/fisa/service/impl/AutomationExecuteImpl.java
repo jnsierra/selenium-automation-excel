@@ -4,8 +4,7 @@ import com.fisa.dto.StepAutomationDTO;
 import com.fisa.service.AutomationExecute;
 import com.fisa.service.ManageExcel;
 import com.fisa.service.StepExecution;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.List;
 @Service
 public class AutomationExecuteImpl implements AutomationExecute {
 
-    private static final Logger logger = LogManager.getLogger(ExecuteImpl.class);
+    private static final Logger logger = Logger.getLogger(AutomationExecuteImpl.class);
 
     private ManageExcel manageExcel;
 

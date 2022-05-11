@@ -3,8 +3,7 @@ package com.fisa.service.impl;
 import com.fisa.dto.StepAutomationDTO;
 import com.fisa.service.ManageWaits;
 import com.fisa.service.StepExecution;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,7 +23,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
 
     private String principalChild;
 
-    private static final Logger logger = LogManager.getLogger(ClickableStepExecutionImpl.class);
+    private static final Logger logger = Logger.getLogger(ClickableStepExecutionImpl.class);
 
     @Autowired
     public ClickableStepExecutionImpl(ManageWaits manageWaits,WebDriver driver) {
@@ -49,7 +48,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
                 logger.error(e.getMessage());
             }
         }
-        logger.info("Se ejecuto la acción con el label: {}", step.getLabelAccion() );
+        logger.info("Se ejecuto la acción con el label: ".concat(step.getLabelAccion()));
         return Boolean.TRUE;
     }
 
@@ -57,7 +56,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
             if("N/A".equalsIgnoreCase(step.getInput())){
                 if("Y".equalsIgnoreCase(step.getExtractInformation())){
                     String valor = element.getAttribute("value");
-                    logger.info("Valor con label: {} ; {}",step.getLabelAccion(), valor );
+                    logger.info("Valor con label:".concat(step.getLabelAccion()).concat(" ; ").concat(valor));
                 }else{
                     element.click();
                 }
@@ -85,7 +84,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
 
     public void addAdditionalKey(StepAutomationDTO step, WebElement element){
         if(!"N/A".equalsIgnoreCase(step.getAdditionalInput())){
-            logger.info("Se generara el input de un key adicional en el label: {} con el key {}", step.getLabelAccion(), step.getAdditionalInput());
+            logger.info("Se generara el input de un key adicional en el label:".concat(step.getLabelAccion()).concat(" con el key ").concat(step.getAdditionalInput()));
             if("TAB".equalsIgnoreCase(step.getAdditionalInput())){
                 element.sendKeys(Keys.TAB);
             }

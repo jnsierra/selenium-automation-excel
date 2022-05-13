@@ -25,6 +25,7 @@ public class ExecuteImpl implements Execute {
     @EventListener(ApplicationReadyEvent.class)
     @Override
     public void executeTest() {
+        long startTime = System.currentTimeMillis();
         logger.info("Se inicia la automatizacion:");
         try {
             this.automationExecute.executeAutomation();
@@ -33,6 +34,9 @@ public class ExecuteImpl implements Execute {
             logger.error(e);
             this.driver.quit();
             throw new RuntimeException(e);
+        }finally {
+            long endTime = System.currentTimeMillis() - startTime;
+            logger.info("Se finalizo la prueba en ".concat("" + (endTime/1000)).concat(" segundos") );
         }
     }
 }

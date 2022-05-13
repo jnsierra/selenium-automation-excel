@@ -34,6 +34,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
     @Override
     public Boolean executeStep(StepAutomationDTO step,String principalChild) {
         this.principalChild = principalChild;
+        long startTime = System.currentTimeMillis();
         try {
             this.manageWindow(step);
             Optional<WebElement> element = manageWaits.waitAndReturnElement(step);
@@ -47,8 +48,10 @@ public class ClickableStepExecutionImpl implements StepExecution {
             }else{
                 logger.error(e.getMessage());
             }
+        }finally {
+            long endTime = System.currentTimeMillis() - startTime;
+            logger.info("Se ejecuto la acción en ".concat("" + (endTime/1000)).concat(" segundos con el label: ") .concat(step.getLabelAccion()));
         }
-        logger.info("Se ejecuto la acción con el label: ".concat(step.getLabelAccion()));
         return Boolean.TRUE;
     }
 

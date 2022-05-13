@@ -3,6 +3,7 @@ package com.fisa.config;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -14,7 +15,8 @@ import java.io.IOException;
 @Configuration
 public class ConfigExcel {
 
-    private String file = "/Users/sierraj/fisa/repositories/excel-automation/Book1.xlsx";
+    @Value("${excel.file}")
+    private String file;
 
     @Bean("WorkbookBean")
     @Scope("singleton")

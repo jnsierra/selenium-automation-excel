@@ -36,6 +36,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
     @Override
     public Boolean executeAutomation() throws InterruptedException {
         List<StepAutomationDTO> automation = this.manageExcel.getStepsExcel();
+        validarInfoExcel(automation);
         this.initializeBrowser();
         //Obtengo la ventana de principal
         this.principalChild = driver.getWindowHandle();
@@ -52,5 +53,11 @@ public class AutomationExecuteImpl implements AutomationExecute {
         logger.debug("Abrimos la URL: ".concat(url));
         driver.manage().window().maximize();
         return Boolean.TRUE;
+    }
+
+    public void validarInfoExcel(List<StepAutomationDTO> automation){
+        logger.info("Ini Informacion cargada desde excel");
+        automation.forEach(step -> logger.info(step.toString()));
+        logger.info("Fin Informacion cargada desde excel");
     }
 }

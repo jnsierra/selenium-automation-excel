@@ -1,6 +1,6 @@
 # Logger con opción root
-log4j.rootLogger=ALL, file, stdout
-log4j.logger.infoLogger=ALL
+log4j.rootLogger=ERROR, file, stdout
+log4j.logger.infoLogger=ERROR, DEBUG
 log4j.additivity.infoLogger = false
 
 log4j.appender.stdout=org.apache.log4j.ConsoleAppender

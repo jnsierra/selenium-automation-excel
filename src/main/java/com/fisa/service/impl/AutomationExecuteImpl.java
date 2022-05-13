@@ -57,6 +57,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
 
     public void validarInfoExcel(List<StepAutomationDTO> automation){
         logger.info("Ini Informacion cargada desde excel");
+        logger.error("Ejemplo de error");
         automation.forEach(step -> logger.info(step.toString()));
         logger.info("Fin Informacion cargada desde excel");
     }

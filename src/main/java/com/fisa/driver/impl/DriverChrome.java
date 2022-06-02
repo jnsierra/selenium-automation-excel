@@ -18,7 +18,9 @@ public class DriverChrome implements DriverBrowser {
         this.path_driver = path_driver;
         System.setProperty(WEB_DRIVER_PARAM, path_driver);
         String fileNameLog = "omnia_spring"+ idTransaccional+".log";
+        String fileNameError = "error_omnia_spring"+ idTransaccional+".txt";
         System.setProperty("LOG_FILE_NAME", fileNameLog);
+        System.setProperty("LOG_FILE_NAME_ERROR", fileNameError);
         webDriver = new ChromeDriver();
     }
     @Override

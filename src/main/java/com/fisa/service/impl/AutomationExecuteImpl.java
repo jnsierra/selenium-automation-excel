@@ -40,9 +40,16 @@ public class AutomationExecuteImpl implements AutomationExecute {
         this.initializeBrowser();
         //Obtengo la ventana de principal
         this.principalChild = driver.getWindowHandle();
-        automation.forEach(step -> {
-            stepExecution.executeStep(step, this.principalChild);
-        });
+        int i = 0;
+        for(StepAutomationDTO item : automation){
+            Boolean response = stepExecution.executeStep(item, this.principalChild);
+            if(!response){
+                logger.error("Se finaliza la prueba por excepcion");
+                break ;
+            }
+            i++;
+        }
+        logger.info("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));
         Thread.sleep(10000);
         this.driver.quit();
         return Boolean.TRUE;
@@ -57,8 +64,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
 
     public void validarInfoExcel(List<StepAutomationDTO> automation){
         logger.info("Ini Informacion cargada desde excel");
-        logger.error("Ejemplo de error");
         automation.forEach(step -> logger.info(step.toString()));
-        logger.info("Fin Informacion cargada desde excel");
+        logger.info("Fin Informacion cargada: Con ".concat(""+automation.size()).concat(" registros. "));
     }
 }

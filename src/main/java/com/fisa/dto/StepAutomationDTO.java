@@ -18,8 +18,12 @@ public class StepAutomationDTO {
     private String input;
     private String labelAccion;
     private Long sleepBefore;
+    private Long sleepAfter;
     private String additionalInput;
     private String requiered;
     private String extractInformation;
+    private String saveInformation;
+    private String variable;
+    private String inputInfoForVariable;
 
 }

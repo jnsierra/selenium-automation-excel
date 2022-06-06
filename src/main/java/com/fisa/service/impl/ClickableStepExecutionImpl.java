@@ -2,6 +2,7 @@ package com.fisa.service.impl;
 
 import com.fisa.dto.StepAutomationDTO;
 import com.fisa.service.ManageWaits;
+import com.fisa.service.SaveInformation;
 import com.fisa.service.StepExecution;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Keys;
@@ -19,6 +20,8 @@ public class ClickableStepExecutionImpl implements StepExecution {
 
     private ManageWaits manageWaits;
 
+    private SaveInformation saveInformation;
+
     private WebDriver driver;
 
     private String principalChild;
@@ -26,9 +29,10 @@ public class ClickableStepExecutionImpl implements StepExecution {
     private static final Logger logger = Logger.getLogger(ClickableStepExecutionImpl.class);
 
     @Autowired
-    public ClickableStepExecutionImpl(ManageWaits manageWaits, WebDriver driver) {
+    public ClickableStepExecutionImpl(ManageWaits manageWaits, WebDriver driver, SaveInformation saveInformation) {
         this.manageWaits = manageWaits;
         this.driver = driver;
+        this.saveInformation = saveInformation;
     }
 
     @Override
@@ -46,6 +50,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
         } else {
             return Boolean.FALSE;
         }
+        Thread.sleep(step.getSleepAfter()*1000);
         long endTime = System.currentTimeMillis() - startTime;
         logger.info("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(step.getLabelAccion()));
         return Boolean.TRUE;
@@ -55,13 +60,18 @@ public class ClickableStepExecutionImpl implements StepExecution {
         try {
             if ("N/A".equalsIgnoreCase(step.getInput())) {
                 if ("Y".equalsIgnoreCase(step.getExtractInformation())) {
-                    String valor = element.getAttribute("value");
-                    logger.info("Valor con label:".concat(step.getLabelAccion()).concat(" ; ").concat(valor));
+                    //Metodo con el cual se maneja la informacion qu se extrae de la aplicacion
+                    manageExtractInformation(step, element);
                 } else {
                     element.click();
                 }
             } else if (!"N/A".equalsIgnoreCase(step.getInput())) {
-                element.sendKeys(step.getInput());
+                //valida si debe ingresar informacion
+                if("N".equalsIgnoreCase(step.getInputInfoForVariable())){
+                    element.sendKeys(step.getInput());
+                }else{
+                    element.sendKeys(saveInformation.getValue(step.getInput()));
+                }
             }
         } catch (Exception e) {
             logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")") );
@@ -95,6 +105,15 @@ public class ClickableStepExecutionImpl implements StepExecution {
             if ("TAB".equalsIgnoreCase(step.getAdditionalInput())) {
                 element.sendKeys(Keys.TAB);
             }
+        }
+    }
+
+    public void manageExtractInformation(StepAutomationDTO step, WebElement element){
+        String valor = element.getAttribute("value");
+        logger.info("Valor con label:".concat(step.getLabelAccion()).concat(" ; ").concat(valor));
+        if("Y".equalsIgnoreCase(step.getSaveInformation())){
+            //Almacenamos la informacion
+            this.saveInformation.guardaInformacion(valor, step.getVariable());
         }
     }
 

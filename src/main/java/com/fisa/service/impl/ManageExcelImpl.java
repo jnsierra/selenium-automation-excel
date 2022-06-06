@@ -40,10 +40,14 @@ public class ManageExcelImpl implements ManageExcel {
                     .timeAdditional(getLongValueCell(i,6))
                     .input(getStringOrNumericValue(i, 7))
                     .labelAccion(getStringValueCell(i,8))
-                    .sleepBefore(getLongValueCell(i, 9))
-                    .additionalInput(getStringValueCell(i,10))
-                    .requiered(getStringValueCell(i,11))
-                    .extractInformation(getStringValueCell(i,12))
+                    .sleepAfter(getLongValueCell(i, 9))
+                    .sleepBefore(getLongValueCell(i, 10))
+                    .additionalInput(getStringValueCell(i,11))
+                    .requiered(getStringValueCell(i,12))
+                    .extractInformation(getStringValueCell(i,13))
+                    .saveInformation(getStringValueCell(i, 14))
+                    .variable(getStringValueCell(i, 15))
+                    .inputInfoForVariable(getStringValueCell(i, 16))
                     .build();
             listOfAutomation.add(step);
         }

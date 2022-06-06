@@ -6,7 +6,7 @@
 
     <groupId>com.fisa</groupId>
     <artifactId>selenium-automation-excel</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.9-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

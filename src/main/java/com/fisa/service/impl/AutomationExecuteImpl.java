@@ -42,7 +42,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
         this.principalChild = driver.getWindowHandle();
         int i = 0;
         for(StepAutomationDTO item : automation){
-            Boolean response = stepExecution.executeStep(item, this.principalChild);
+            Boolean response = stepExecution.executeStep(item, this.principalChild, i +1);
             if(!response){
                 logger.error("Se finaliza la prueba por excepcion");
                 break ;

@@ -1,6 +1,7 @@
 package com.fisa.service.impl;
 
 import com.fisa.dto.StepAutomationDTO;
+import com.fisa.service.ManagePictures;
 import com.fisa.service.ManageWaits;
 import com.fisa.service.SaveInformation;
 import com.fisa.service.StepExecution;
@@ -26,20 +27,24 @@ public class ClickableStepExecutionImpl implements StepExecution {
 
     private String principalChild;
 
+    private ManagePictures managePictures;
+
     private static final Logger logger = Logger.getLogger(ClickableStepExecutionImpl.class);
 
     @Autowired
-    public ClickableStepExecutionImpl(ManageWaits manageWaits, WebDriver driver, SaveInformation saveInformation) {
+    public ClickableStepExecutionImpl(ManageWaits manageWaits, WebDriver driver, SaveInformation saveInformation, ManagePictures managePictures) {
         this.manageWaits = manageWaits;
         this.driver = driver;
         this.saveInformation = saveInformation;
+        this.managePictures = managePictures;
     }
 
     @Override
-    public Boolean executeStep(StepAutomationDTO step, String principalChild) throws InterruptedException {
+    public Boolean executeStep(StepAutomationDTO step, String principalChild, Integer iterator) throws InterruptedException {
         this.principalChild = principalChild;
         long startTime = System.currentTimeMillis();
         this.manageWindow(step);
+        this.managePictures.validatePhoto(step,"BEFORE", iterator);
         Optional<WebElement> element = manageWaits.waitAndReturnElement(step);
         if (element.isPresent()) {
             Boolean response = executeStepSingle(step, element.get());
@@ -53,6 +58,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
         Thread.sleep(step.getSleepAfter()*1000);
         long endTime = System.currentTimeMillis() - startTime;
         logger.info("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(step.getLabelAccion()));
+        this.managePictures.validatePhoto(step,"AFTER", iterator);
         return Boolean.TRUE;
     }
 

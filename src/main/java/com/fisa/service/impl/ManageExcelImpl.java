@@ -48,6 +48,8 @@ public class ManageExcelImpl implements ManageExcel {
                     .saveInformation(getStringValueCell(i, 14))
                     .variable(getStringValueCell(i, 15))
                     .inputInfoForVariable(getStringValueCell(i, 16))
+                    .takePicture(getStringValueCell(i,17))
+                    .timePicture(getStringValueCell(i,18))
                     .build();
             listOfAutomation.add(step);
         }

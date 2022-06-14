@@ -25,5 +25,6 @@ public class StepAutomationDTO {
     private String saveInformation;
     private String variable;
     private String inputInfoForVariable;
-
+    private String takePicture;
+    private String timePicture;
 }

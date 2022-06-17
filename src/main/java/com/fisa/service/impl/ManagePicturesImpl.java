@@ -34,6 +34,11 @@ public class ManagePicturesImpl implements ManagePictures {
         }
     }
 
+    @Override
+    public void generateScreenShot() {
+
+    }
+
     private void generatePhoto(StepAutomationDTO step, Integer iterator){
         TakesScreenshot scrShot =  ( (TakesScreenshot) driver );
         File srcFile = scrShot.getScreenshotAs(OutputType.FILE);

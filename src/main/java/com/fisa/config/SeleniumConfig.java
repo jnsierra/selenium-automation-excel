@@ -1,11 +1,12 @@
 package com.fisa.config;
 
+import com.fisa.driver.DriverBrowser;
 import com.fisa.driver.impl.DriverChrome;
+import com.fisa.driver.impl.DriverFirefox;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 
 import java.util.Random;
@@ -15,8 +16,10 @@ public class SeleniumConfig {
 
     @Value("${selenium.browser}")
     private String browser;
-    @Value("${selenium.path}")
-    private String PATH_DRIVER;
+    @Value("${selenium.path.chrome}")
+    private String PATH_DRIVER_CHROME;
+    @Value("${selenium.path.firefox}")
+    private String PATH_DRIVER_FIREFOX;
 
     private Integer idTransaccion;
 
@@ -24,12 +27,14 @@ public class SeleniumConfig {
     @Scope("singleton")
     public WebDriver getDriver(){
         Random random = new Random();
+        DriverBrowser driver = null;
         if("chrome".equalsIgnoreCase(browser)){
-            DriverChrome driverChrome = new DriverChrome(PATH_DRIVER, Math.abs(random.nextInt()));
-            this.idTransaccion = driverChrome.getIdTransaccional();
-            return driverChrome.getDriver();
+            driver = new DriverChrome(PATH_DRIVER_CHROME, Math.abs(random.nextInt()));
+        }else if("firefox".equalsIgnoreCase(browser)){
+            driver = new DriverFirefox(PATH_DRIVER_FIREFOX, Math.abs(random.nextInt()));
         }
-        return null;
+        this.idTransaccion = driver.getIdTransaccional();
+        return driver.getDriver();
     }
     @Bean("IdTransaccional")
     @Scope("singleton")

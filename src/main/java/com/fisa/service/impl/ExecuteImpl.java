@@ -2,6 +2,7 @@ package com.fisa.service.impl;
 
 import com.fisa.service.AutomationExecute;
 import com.fisa.service.Execute;
+import com.fisa.service.ManagePictures;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ public class ExecuteImpl implements Execute {
 
     private WebDriver driver;
 
+    private ManagePictures managePictures;
     @Autowired
-    public ExecuteImpl(AutomationExecute automationExecute,WebDriver driver) {
+    public ExecuteImpl(AutomationExecute automationExecute,WebDriver driver, ManagePictures managePictures) {
         this.automationExecute = automationExecute;
         this.driver = driver;
+        this.managePictures = managePictures;
     }
 
     @EventListener(ApplicationReadyEvent.class)

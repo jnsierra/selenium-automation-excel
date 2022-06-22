@@ -16,13 +16,10 @@ public class ExecuteImpl implements Execute {
     private AutomationExecute automationExecute;
 
     private WebDriver driver;
-
-    private ManagePictures managePictures;
     @Autowired
     public ExecuteImpl(AutomationExecute automationExecute,WebDriver driver, ManagePictures managePictures) {
         this.automationExecute = automationExecute;
         this.driver = driver;
-        this.managePictures = managePictures;
     }
 
     @EventListener(ApplicationReadyEvent.class)

@@ -3,6 +3,7 @@ package com.fisa.service.impl;
 import com.fisa.dto.StepAutomationDTO;
 import com.fisa.service.AutomationExecute;
 import com.fisa.service.ManageExcel;
+import com.fisa.service.ManagePictures;
 import com.fisa.service.StepExecution;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -24,13 +25,15 @@ public class AutomationExecuteImpl implements AutomationExecute {
     private String url;
 
     private String principalChild;
+    private ManagePictures managePictures;
 
     @Autowired
-    public AutomationExecuteImpl(ManageExcel manageExcel, WebDriver driver,StepExecution stepExecution) {
+    public AutomationExecuteImpl(ManageExcel manageExcel, WebDriver driver,StepExecution stepExecution, ManagePictures managePictures) {
         this.manageExcel = manageExcel;
         this.url = this.manageExcel.getUrlApp();
         this.driver = driver;
         this.stepExecution = stepExecution;
+        this.managePictures = managePictures;
     }
 
     @Override
@@ -45,7 +48,8 @@ public class AutomationExecuteImpl implements AutomationExecute {
             Boolean response = stepExecution.executeStep(item, this.principalChild, i +1);
             if(!response){
                 logger.error("Se finaliza la prueba por excepcion");
-                break ;
+                this.managePictures.generateBugScreenShot();
+                throw new InterruptedException("Se genero una excepcion en la ejecución de la prueba");
             }
             i++;
         }

@@ -28,6 +28,7 @@ public class SeleniumConfig {
     public WebDriver getDriver(){
         Random random = new Random();
         DriverBrowser driver = null;
+        System.out.println("Este es el browser a usar: " + browser);
         if("chrome".equalsIgnoreCase(browser)){
             driver = new DriverChrome(PATH_DRIVER_CHROME, Math.abs(random.nextInt()));
         }else if("firefox".equalsIgnoreCase(browser)){

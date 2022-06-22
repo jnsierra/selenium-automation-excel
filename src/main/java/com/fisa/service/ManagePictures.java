@@ -6,5 +6,6 @@ public interface ManagePictures {
 
     void validatePhoto(StepAutomationDTO step, String time, Integer iterator);
 
-    void generateScreenShot();
+    void generateBugScreenShot();
+
 }

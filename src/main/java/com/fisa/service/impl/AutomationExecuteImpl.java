@@ -1,10 +1,7 @@
 package com.fisa.service.impl;
 
 import com.fisa.dto.StepAutomationDTO;
-import com.fisa.service.AutomationExecute;
-import com.fisa.service.ManageExcel;
-import com.fisa.service.ManagePictures;
-import com.fisa.service.StepExecution;
+import com.fisa.service.*;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +23,12 @@ public class AutomationExecuteImpl implements AutomationExecute {
 
     private String principalChild;
     private ManagePictures managePictures;
+    private DataTrackingTest dataTrackingTest;
 
     @Autowired
-    public AutomationExecuteImpl(ManageExcel manageExcel, WebDriver driver,StepExecution stepExecution, ManagePictures managePictures) {
+    public AutomationExecuteImpl(ManageExcel manageExcel, WebDriver driver
+            ,StepExecution stepExecution, ManagePictures managePictures
+            ,DataTrackingTest dataTrackingTest) {
         this.manageExcel = manageExcel;
         this.url = this.manageExcel.getUrlApp();
         this.driver = driver;
@@ -53,8 +53,9 @@ public class AutomationExecuteImpl implements AutomationExecute {
             }
             i++;
         }
-        logger.info("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));
-        Thread.sleep(10000);
+
+        logger.debug("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));
+        Thread.sleep(1000);
         this.driver.quit();
         return Boolean.TRUE;
     }
@@ -67,8 +68,8 @@ public class AutomationExecuteImpl implements AutomationExecute {
     }
 
     public void validarInfoExcel(List<StepAutomationDTO> automation){
-        logger.info("Ini Informacion cargada desde excel");
-        automation.forEach(step -> logger.info(step.toString()));
-        logger.info("Fin Informacion cargada: Con ".concat(""+automation.size()).concat(" registros. "));
+        logger.debug("Ini Informacion cargada desde excel");
+        automation.forEach(step -> logger.debug(step.toString()));
+        logger.debug("Fin Informacion cargada: Con ".concat(""+automation.size()).concat(" registros. "));
     }
 }

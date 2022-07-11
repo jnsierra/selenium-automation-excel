@@ -17,10 +17,13 @@ public class DriverChrome implements DriverBrowser {
         this.idTransaccional = idTransaccional;
         this.path_driver = path_driver;
         System.setProperty(WEB_DRIVER_PARAM, path_driver);
-        String fileNameLog = "omnia_spring"+ idTransaccional+".log";
-        String fileNameError = "error_omnia_spring"+ idTransaccional+".txt";
+        String fileNameLog = "omnia_spring"+ idTransaccional;
+        String fileNameError = "error_omnia_spring"+ idTransaccional;
+        String fileNameDEBUG = "debug_omnia_spring"+ idTransaccional;
+
         System.setProperty("LOG_FILE_NAME", fileNameLog);
         System.setProperty("LOG_FILE_NAME_ERROR", fileNameError);
+        System.setProperty("LOG_FILE_NAME_DEBUG", fileNameDEBUG);
         webDriver = new ChromeDriver();
     }
     @Override

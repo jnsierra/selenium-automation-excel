@@ -1,6 +1,7 @@
 package com.fisa.service.impl;
 
 import com.fisa.dto.StepAutomationDTO;
+import com.fisa.dto.StepTestTrackingDTO;
 import com.fisa.service.ManagePictures;
 import com.fisa.service.ManageWaits;
 import com.fisa.service.SaveInformation;
@@ -28,15 +29,19 @@ public class ClickableStepExecutionImpl implements StepExecution {
     private String principalChild;
 
     private ManagePictures managePictures;
+    private DataTrackingTestImpl dataTrackingTest;
 
     private static final Logger logger = Logger.getLogger(ClickableStepExecutionImpl.class);
 
     @Autowired
-    public ClickableStepExecutionImpl(ManageWaits manageWaits, WebDriver driver, SaveInformation saveInformation, ManagePictures managePictures) {
+    public ClickableStepExecutionImpl(ManageWaits manageWaits, WebDriver driver
+            , SaveInformation saveInformation, ManagePictures managePictures
+            , DataTrackingTestImpl dataTrackingTest) {
         this.manageWaits = manageWaits;
         this.driver = driver;
         this.saveInformation = saveInformation;
         this.managePictures = managePictures;
+        this.dataTrackingTest = dataTrackingTest;
     }
 
     @Override
@@ -57,8 +62,13 @@ public class ClickableStepExecutionImpl implements StepExecution {
         }
         Thread.sleep(step.getSleepAfter()*1000);
         long endTime = System.currentTimeMillis() - startTime;
-        logger.info("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(step.getLabelAccion()));
+        logger.debug("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(step.getLabelAccion()));
         this.managePictures.validatePhoto(step,"AFTER", iterator);
+        this.dataTrackingTest.setStepTestTracking(StepTestTrackingDTO.builder()
+                        .label(step.getLabelAccion())
+                        .time(endTime)
+                        .state(Boolean.TRUE)
+                .build());
         return Boolean.TRUE;
     }
 

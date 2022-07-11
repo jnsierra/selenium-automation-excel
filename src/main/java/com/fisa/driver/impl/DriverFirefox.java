@@ -15,8 +15,8 @@ public class DriverFirefox implements DriverBrowser {
         this.path_driver = path_driver;
         this.idTransaccional = idTransaccional;
         System.setProperty(WEB_DRIVER_PARAM, path_driver);
-        String fileNameLog = "omnia_spring"+ idTransaccional+".log";
-        String fileNameError = "error_omnia_spring"+ idTransaccional+".txt";
+        String fileNameLog = "omnia_spring"+ idTransaccional;
+        String fileNameError = "error_omnia_spring"+ idTransaccional;
         System.setProperty("LOG_FILE_NAME", fileNameLog);
         System.setProperty("LOG_FILE_NAME_ERROR", fileNameError);
         this.webDriver = new FirefoxDriver();

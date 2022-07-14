@@ -18,6 +18,7 @@ public class ExecuteImpl implements Execute {
     private AutomationExecute automationExecute;
     private DataTrackingTest dataTrackingTest;
     private WebDriver driver;
+
     @Autowired
     public ExecuteImpl(AutomationExecute automationExecute, WebDriver driver, ManagePictures managePictures,
                        DataTrackingTest dataTrackingTest) {
@@ -47,7 +48,7 @@ public class ExecuteImpl implements Execute {
     }
 
     public void writeTrackingLog(){
-        logger.info("[TRACKING_TEST][INI_TRACKING]");
+        logger.info("[TRACKING_TEST][INI_TRACKING]|TEST_STATUS|"+this.automationExecute.getFinishTest()+"|");
         for(StepTestTrackingDTO item : this.dataTrackingTest.getSteps()){
             logger.info("[TRACKING_TEST][STEP_TRACKING]|"+item.getLabel()+"|" + item.getTime() + "|" + item.getState()+"|");
         }

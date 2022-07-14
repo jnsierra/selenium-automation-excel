@@ -57,7 +57,7 @@ public class ManageWaitsImpl implements ManageWaits {
         try {
             usernameElement = wait.until(getIsTrue(stepAutomationDTO));
         }catch (TimeoutException ex){
-            logger.error("Error en el elemento (".concat(stepAutomationDTO.getLabelAccion()).concat(")") );
+            logger.error("Error en el elemento (".concat(stepAutomationDTO.getLabelAccion()).concat(")" + " En la linea de ejecución: ("+stepAutomationDTO.getIterator()+")") );
             logger.error("Con el elemento identificador (".concat(stepAutomationDTO.getFindBy()).concat(")"));
             logger.error(ex);
             ex.printStackTrace();

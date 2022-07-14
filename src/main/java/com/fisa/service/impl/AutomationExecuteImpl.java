@@ -24,6 +24,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
     private String principalChild;
     private ManagePictures managePictures;
     private DataTrackingTest dataTrackingTest;
+    private Boolean finishTest;
 
     @Autowired
     public AutomationExecuteImpl(ManageExcel manageExcel, WebDriver driver
@@ -34,6 +35,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
         this.driver = driver;
         this.stepExecution = stepExecution;
         this.managePictures = managePictures;
+        this.finishTest = Boolean.FALSE;
     }
 
     @Override
@@ -45,15 +47,17 @@ public class AutomationExecuteImpl implements AutomationExecute {
         this.principalChild = driver.getWindowHandle();
         int i = 0;
         for(StepAutomationDTO item : automation){
+            item.setIterator(i + 1);
             Boolean response = stepExecution.executeStep(item, this.principalChild, i +1);
             if(!response){
+                this.finishTest = Boolean.FALSE;
                 logger.error("Se finaliza la prueba por excepcion");
                 this.managePictures.generateBugScreenShot();
                 throw new InterruptedException("Se genero una excepcion en la ejecución de la prueba");
             }
             i++;
         }
-
+        this.finishTest = Boolean.TRUE;
         logger.debug("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));
         Thread.sleep(1000);
         this.driver.quit();
@@ -71,5 +75,9 @@ public class AutomationExecuteImpl implements AutomationExecute {
         logger.debug("Ini Informacion cargada desde excel");
         automation.forEach(step -> logger.debug(step.toString()));
         logger.debug("Fin Informacion cargada: Con ".concat(""+automation.size()).concat(" registros. "));
+    }
+
+    public Boolean getFinishTest() {
+        return finishTest;
     }
 }

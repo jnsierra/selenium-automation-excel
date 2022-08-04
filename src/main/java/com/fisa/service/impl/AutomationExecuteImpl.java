@@ -46,22 +46,37 @@ public class AutomationExecuteImpl implements AutomationExecute {
         //Obtengo la ventana de principal
         this.principalChild = driver.getWindowHandle();
         int i = 0;
-        for(StepAutomationDTO item : automation){
+        for( i = 0 ; i< automation.size(); i++){
+            StepAutomationDTO item = automation.get(i);
             item.setIterator(i + 1);
             Boolean response = stepExecution.executeStep(item, this.principalChild, i +1);
             if(!response){
-                this.finishTest = Boolean.FALSE;
-                logger.error("Se finaliza la prueba por excepcion");
-                this.managePictures.generateBugScreenShot();
-                throw new InterruptedException("Se genero una excepcion en la ejecución de la prueba");
+                logger.debug("Tiene reintentos ".concat(item.getRetry()));
+                logger.debug("Paso fallido ".concat(item.toString()));
+                if("S".equalsIgnoreCase(item.getRetry())){
+                    logger.debug("Se ejecutara un reintento del paso ".concat(item.getLabelAccion()).concat(" en su ").concat(item.getCurrentNumbersOfRetries().toString()).concat("intento") );
+                    automation.get(i).setCurrentNumbersOfRetries(automation.get(i).getCurrentNumbersOfRetries()+1);
+                    i = item.getStepRetry().intValue() - 2;
+                    if(item.getNumberOfRetries() < item.getCurrentNumbersOfRetries()){
+                        generateError();
+                    }
+                }else{
+                    generateError();
+                }
             }
-            i++;
         }
         this.finishTest = Boolean.TRUE;
         logger.debug("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));
         Thread.sleep(1000);
         this.driver.quit();
         return Boolean.TRUE;
+    }
+
+    private void generateError() throws InterruptedException {
+        this.finishTest = Boolean.FALSE;
+        logger.error("Se finaliza la prueba por excepcion");
+        this.managePictures.generateBugScreenShot();
+        throw new InterruptedException("Se genero una excepcion en la ejecución de la prueba");
     }
 
     public Boolean initializeBrowser(){

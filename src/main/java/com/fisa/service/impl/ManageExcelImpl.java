@@ -50,7 +50,11 @@ public class ManageExcelImpl implements ManageExcel {
                     .inputInfoForVariable(getStringValueCell(i, 16))
                     .takePicture(getStringValueCell(i,17))
                     .timePicture(getStringValueCell(i,18))
+                    .retry(getStringValueCell(i,19))
+                    .stepRetry(getLongValueCell(i,20))
+                    .numberOfRetries(getLongValueCell(i, 21))
                     .build();
+            step.setCurrentNumbersOfRetries(0L);
             listOfAutomation.add(step);
         }
         return listOfAutomation;

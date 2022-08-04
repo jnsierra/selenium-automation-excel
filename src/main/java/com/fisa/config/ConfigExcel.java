@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Configuration
-@PropertySource("file:/opt/repository/configuration/application.properties")
 public class ConfigExcel {
 
     @Value("${excel.file.mac}")

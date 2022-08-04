@@ -28,4 +28,8 @@ public class StepAutomationDTO {
     private String takePicture;
     private String timePicture;
     private Integer iterator;
+    private String retry;
+    private Long stepRetry;
+    private Long numberOfRetries;
+    private Long currentNumbersOfRetries;
 }

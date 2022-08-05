@@ -1,6 +1,7 @@
 package com.fisa.service.impl;
 
 import com.fisa.dto.StepAutomationDTO;
+import com.fisa.dto.StepTestTrackingDTO;
 import com.fisa.service.*;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -23,6 +24,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
 
     private String principalChild;
     private ManagePictures managePictures;
+
     private DataTrackingTest dataTrackingTest;
     private Boolean finishTest;
 
@@ -36,6 +38,7 @@ public class AutomationExecuteImpl implements AutomationExecute {
         this.stepExecution = stepExecution;
         this.managePictures = managePictures;
         this.finishTest = Boolean.FALSE;
+        this.dataTrackingTest = dataTrackingTest;
     }
 
     @Override
@@ -47,29 +50,43 @@ public class AutomationExecuteImpl implements AutomationExecute {
         this.principalChild = driver.getWindowHandle();
         int i = 0;
         for( i = 0 ; i< automation.size(); i++){
+            //Inicio a tomar el tiempo
+            long startTime = System.currentTimeMillis();
             StepAutomationDTO item = automation.get(i);
             item.setIterator(i + 1);
             Boolean response = stepExecution.executeStep(item, this.principalChild, i +1);
-            if(!response){
-                logger.debug("Tiene reintentos ".concat(item.getRetry()));
-                logger.debug("Paso fallido ".concat(item.toString()));
-                if("S".equalsIgnoreCase(item.getRetry())){
-                    logger.debug("Se ejecutara un reintento del paso ".concat(item.getLabelAccion()).concat(" en su ").concat(item.getCurrentNumbersOfRetries().toString()).concat("intento") );
-                    automation.get(i).setCurrentNumbersOfRetries(automation.get(i).getCurrentNumbersOfRetries()+1);
-                    i = item.getStepRetry().intValue() - 2;
-                    if(item.getNumberOfRetries() < item.getCurrentNumbersOfRetries()){
-                        generateError();
-                    }
-                }else{
-                    generateError();
-                }
-            }
+            i = manageRetries(automation, i, item, response);
+            long endTime = System.currentTimeMillis() - startTime;
+            logger.debug("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(item.getLabelAccion()));
+            this.dataTrackingTest.setStepTestTracking(StepTestTrackingDTO.builder()
+                    .label(item.getLabelAccion())
+                    .time(endTime)
+                    .state(Boolean.TRUE)
+                    .build());
         }
         this.finishTest = Boolean.TRUE;
         logger.debug("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));
         Thread.sleep(1000);
         this.driver.quit();
         return Boolean.TRUE;
+    }
+
+    private int manageRetries(List<StepAutomationDTO> automation, int i, StepAutomationDTO item, Boolean response) throws InterruptedException {
+        if(!response){
+            logger.debug("Tiene reintentos ".concat(item.getRetry()));
+            logger.debug("Paso fallido ".concat(item.toString()));
+            if("S".equalsIgnoreCase(item.getRetry())){
+                logger.debug("Se ejecutara un reintento del paso ".concat(item.getLabelAccion()).concat(" en su ").concat(item.getCurrentNumbersOfRetries().toString()).concat("intento") );
+                automation.get(i).setCurrentNumbersOfRetries(automation.get(i).getCurrentNumbersOfRetries()+1);
+                i = item.getStepRetry().intValue() - 2;
+                if(item.getNumberOfRetries() < item.getCurrentNumbersOfRetries()){
+                    generateError();
+                }
+            }else{
+                generateError();
+            }
+        }
+        return i;
     }
 
     private void generateError() throws InterruptedException {

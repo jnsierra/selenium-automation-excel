@@ -21,6 +21,17 @@ public class TestTrackingDTO {
         if(Objects.isNull(steps)){
             this.steps = new ArrayList<>();
         }
-        steps.add(step);
+        Boolean encontrado = Boolean.FALSE;
+        //Valido si existe el item
+        for(StepTestTrackingDTO item : steps ){
+            if( Objects.nonNull(item.getLabel())  && item.getLabel().equalsIgnoreCase(step.getLabel())){
+                //Quiere decir que es un reintento
+                item.setTime( item.getTime() + step.getTime() );
+                encontrado = Boolean.TRUE;
+            }
+        }
+        if(!encontrado){
+            steps.add(step);
+        }
     }
 }

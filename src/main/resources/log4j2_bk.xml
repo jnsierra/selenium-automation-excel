@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">
+            [%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n
+        </Property>
+        <Property name="LOG_PATH">
+            /opt/repository/log
+        </Property>
+        <Property name="LOG_NAME_COMMONS">
+            ${sys:LOG_FILE_NAME}
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n"/>
+        </Console>
+        <!-- file appender -->
+        <RollingFile name="commons-log" fileName="/opt/repository/log/${LOG_FILE_NAME}.log"
+                     filePattern="/opt/repository/log/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.log">
+            <!-- log pattern -->
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n"/>
+            <!-- set file size policy -->
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB" />
+            </Policies>
+        </RollingFile>
+        <RollingFile name="debug-log" fileName="/opt/repository/log/${sys:LOG_FILE_NAME_ERROR}.log"
+                     filePattern="/opt/repository/log/${sys:LOG_FILE_NAME_ERROR}-%d{yyyy-MM-dd}.log">
+            <!-- log pattern -->
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n"/>
+            <!-- set file size policy -->
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="5 MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.fisa" level="debug" additivity="false">
+            <appender-ref ref="commons-log" level="info"/>
+            <appender-ref ref="debug-log" level="debug"/>
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="ConsoleAppender" />
+        </Root>
+    </Loggers>
+</Configuration>

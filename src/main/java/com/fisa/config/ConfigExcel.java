@@ -49,6 +49,7 @@ public class ConfigExcel {
             }else{
                 file = fileWindows;
             }
+            System.out.println("Excel a leer: " + file);
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
             return null;

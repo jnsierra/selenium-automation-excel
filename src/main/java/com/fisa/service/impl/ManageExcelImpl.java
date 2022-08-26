@@ -53,6 +53,7 @@ public class ManageExcelImpl implements ManageExcel {
                     .retry(getStringValueCell(i,19))
                     .stepRetry(getLongValueCell(i,20))
                     .numberOfRetries(getLongValueCell(i, 21))
+                    .imageName(getStringValueCell(i, 22))
                     .build();
             step.setCurrentNumbersOfRetries(0L);
             listOfAutomation.add(step);
@@ -64,6 +65,15 @@ public class ManageExcelImpl implements ManageExcel {
     public String getUrlApp() {
         //Leemos la primera linea del excel
         return getStringValueCell(0, 1);
+    }
+
+    @Override
+    public String getLocationResources() {
+        try {
+            return getStringValueCell(0, 3);
+        }catch (Exception e ){
+            return null;
+        }
     }
 
     private String getStringValueCell(int row, int column){

@@ -9,5 +9,6 @@ public interface ManageExcel {
     List<StepAutomationDTO> getStepsExcel();
 
     String getUrlApp();
+    String getLocationResources();
 
 }

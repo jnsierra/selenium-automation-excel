@@ -21,24 +21,29 @@ public class AutomationExecuteImpl implements AutomationExecute {
 
     private WebDriver driver;
     private String url;
-
+    private String imageLocation;
     private String principalChild;
     private ManagePictures managePictures;
 
     private DataTrackingTest dataTrackingTest;
     private Boolean finishTest;
+    private ManageImageSelect manageImageSelect;
 
     @Autowired
     public AutomationExecuteImpl(ManageExcel manageExcel, WebDriver driver
             ,StepExecution stepExecution, ManagePictures managePictures
-            ,DataTrackingTest dataTrackingTest) {
+            ,DataTrackingTest dataTrackingTest
+            ,ManageImageSelect manageImageSelect) {
         this.manageExcel = manageExcel;
         this.url = this.manageExcel.getUrlApp();
+        this.imageLocation = this.manageExcel.getLocationResources();
+        System.out.println("Ubicacion imagenes: " + this.imageLocation);
         this.driver = driver;
         this.stepExecution = stepExecution;
         this.managePictures = managePictures;
         this.finishTest = Boolean.FALSE;
         this.dataTrackingTest = dataTrackingTest;
+        this.manageImageSelect = manageImageSelect;
     }
 
     @Override
@@ -54,7 +59,12 @@ public class AutomationExecuteImpl implements AutomationExecute {
             long startTime = System.currentTimeMillis();
             StepAutomationDTO item = automation.get(i);
             item.setIterator(i + 1);
-            Boolean response = stepExecution.executeStep(item, this.principalChild, i +1);
+            Boolean response = Boolean.FALSE;
+            if("N/A".equalsIgnoreCase(item.getImageName())){
+                 response = stepExecution.executeStep(item, this.principalChild, i +1);
+            }else{
+                response = this.manageImageSelect.validateImageSelect(item);
+            }
             i = manageRetries(automation, i, item, response);
             long endTime = System.currentTimeMillis() - startTime;
             logger.debug("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(item.getLabelAccion()));

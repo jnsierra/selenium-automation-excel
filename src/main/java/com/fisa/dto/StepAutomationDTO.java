@@ -32,4 +32,5 @@ public class StepAutomationDTO {
     private Long stepRetry;
     private Long numberOfRetries;
     private Long currentNumbersOfRetries;
+    private String imageName;
 }

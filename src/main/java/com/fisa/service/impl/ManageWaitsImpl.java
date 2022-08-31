@@ -31,15 +31,19 @@ public class ManageWaitsImpl implements ManageWaits {
 
     @Override
     public Optional<WebElement> waitAndReturnElement(StepAutomationDTO stepAutomationDTO) throws InterruptedException {
-        sleepTime(stepAutomationDTO);
-        WebElement elemnt = this.waitFluent(stepAutomationDTO);
-        if(Objects.nonNull(elemnt)){
-            Boolean response = Boolean.TRUE;
-            if("Clickable".equalsIgnoreCase(stepAutomationDTO.getAdditionalTypeWait().name())){
-                response = this.generateExplicit(stepAutomationDTO.getTimeAdditional(), elemnt,stepAutomationDTO);
+        try {
+            sleepTime(stepAutomationDTO);
+            WebElement elemnt = this.waitFluent(stepAutomationDTO);
+            if(Objects.nonNull(elemnt)){
+                Boolean response = Boolean.TRUE;
+                if("Clickable".equalsIgnoreCase(stepAutomationDTO.getAdditionalTypeWait().name())){
+                    response = this.generateExplicit(stepAutomationDTO.getTimeAdditional(), elemnt,stepAutomationDTO);
+                }
+                if(response)
+                    return Optional.of(elemnt);
             }
-            if(response)
-                return Optional.of(elemnt);
+        }catch (Exception e){
+            logger.error("Se genero una excepcion de tiempos");
         }
         return Optional.empty();
     }
@@ -87,7 +91,7 @@ public class ManageWaitsImpl implements ManageWaits {
             }
             Thread.sleep(500);
         }catch (Exception e){
-            logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")") );
+            logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")" + " En la linea de ejecución: ("+step.getIterator()+") en una espera de para que sea accesible para dar click") );
             logger.error("Con el elemento identificador (".concat(step.getFindBy()).concat(")"));
             logger.error(e);
             return Boolean.FALSE;

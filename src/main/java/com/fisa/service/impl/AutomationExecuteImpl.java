@@ -65,14 +65,14 @@ public class AutomationExecuteImpl implements AutomationExecute {
             }else{
                 response = this.manageImageSelect.validateImageSelect(item);
             }
-            i = manageRetries(automation, i, item, response);
             long endTime = System.currentTimeMillis() - startTime;
-            logger.debug("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(item.getLabelAccion()));
             this.dataTrackingTest.setStepTestTracking(StepTestTrackingDTO.builder()
                     .label(item.getLabelAccion())
                     .time(endTime)
                     .state(Boolean.TRUE)
                     .build());
+            logger.debug("Se ejecuto la acción en ".concat("" + (endTime / 1000)).concat(" segundos con el label: ").concat(item.getLabelAccion()));
+            i = manageRetries(automation, i, item, response);
         }
         this.finishTest = Boolean.TRUE;
         logger.debug("Se ejecutaron ".concat(""+i).concat(" registros exitosamente. "));

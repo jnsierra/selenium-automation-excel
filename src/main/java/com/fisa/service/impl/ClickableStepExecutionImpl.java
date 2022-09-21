@@ -7,6 +7,7 @@ import com.fisa.service.ManageWaits;
 import com.fisa.service.SaveInformation;
 import com.fisa.service.StepExecution;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -73,7 +74,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
                     //Metodo con el cual se maneja la informacion qu se extrae de la aplicacion
                     manageExtractInformation(step, element);
                 } else {
-                    element.click();
+                    clicElement(step, element);
                 }
             } else if (!"N/A".equalsIgnoreCase(step.getInput())) {
                 //valida si debe ingresar informacion
@@ -84,7 +85,7 @@ public class ClickableStepExecutionImpl implements StepExecution {
                 }
             }
         } catch (Exception e) {
-            logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")") );
+            logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")") + " En la linea de ejecución: ("+step.getIterator()+") al ejecutar la accion deseada. " );
             logger.error("Con el elemento identificador (".concat(step.getFindBy()).concat(")"));
             logger.error(e);
             return Boolean.FALSE;
@@ -125,6 +126,16 @@ public class ClickableStepExecutionImpl implements StepExecution {
             //Almacenamos la informacion
             this.saveInformation.guardaInformacion(valor, step.getVariable());
         }
+    }
+
+    public void clicElement(StepAutomationDTO step, WebElement element){
+        try {
+            element.click();
+        }catch (ElementClickInterceptedException ec){
+            //Manejo la excepcion
+            logger.error("Genera excepcion al momento de dar clic");
+        }
+
     }
 
 }

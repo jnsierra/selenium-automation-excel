@@ -7,10 +7,7 @@ import com.fisa.service.ManageWaits;
 import com.fisa.service.SaveInformation;
 import com.fisa.service.StepExecution;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,6 +127,11 @@ public class ClickableStepExecutionImpl implements StepExecution {
 
     public void clicElement(StepAutomationDTO step, WebElement element){
         try {
+            if("Click Select accion".equals(step.getLabelAccion())){
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("arguments[0].scrollIntoView();", element);
+                logger.debug("Llega al paso donde no da click");
+            }
             element.click();
         }catch (ElementClickInterceptedException ec){
             //Manejo la excepcion

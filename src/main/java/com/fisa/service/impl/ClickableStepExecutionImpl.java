@@ -127,15 +127,16 @@ public class ClickableStepExecutionImpl implements StepExecution {
 
     public void clicElement(StepAutomationDTO step, WebElement element){
         try {
-            if("Click Select accion".equals(step.getLabelAccion())){
+            if("S".equals(step.getScroll())){
+                logger.debug("Se ejecutara el scroll para el elemento");
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 js.executeScript("arguments[0].scrollIntoView();", element);
-                logger.debug("Llega al paso donde no da click");
             }
             element.click();
-        }catch (ElementClickInterceptedException ec){
-            //Manejo la excepcion
-            logger.error("Genera excepcion al momento de dar clic");
+        }catch (ElementClickInterceptedException e){
+            logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")") + " En la linea de ejecución: ("+step.getIterator()+") Genera excepcion al momento de dar clic. " );
+            logger.error("Con el elemento identificador (".concat(step.getFindBy()).concat(")"));
+            logger.error(e);
         }
 
     }

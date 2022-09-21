@@ -54,6 +54,7 @@ public class ManageExcelImpl implements ManageExcel {
                     .stepRetry(getLongValueCell(i,20))
                     .numberOfRetries(getLongValueCell(i, 21))
                     .imageName(getStringValueCell(i, 22))
+                    .scroll(getStringValueCell(i,23))
                     .build();
             step.setCurrentNumbersOfRetries(0L);
             listOfAutomation.add(step);

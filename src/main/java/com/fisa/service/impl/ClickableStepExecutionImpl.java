@@ -143,6 +143,11 @@ public class ClickableStepExecutionImpl implements StepExecution {
     }
 
     public void clickElemntWithJs(StepAutomationDTO step, WebElement element){
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         logger.error("Se iniciara a dar click con JavaScript al fallar por medio de selenium");
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].click();", element);

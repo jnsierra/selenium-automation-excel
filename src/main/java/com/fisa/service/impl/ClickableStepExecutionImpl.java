@@ -151,7 +151,9 @@ public class ClickableStepExecutionImpl implements StepExecution {
         logger.error("Se iniciara a dar click con JavaScript al fallar por medio de selenium");
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView();", element);
+        logger.error("Se realiza scroll con JS");
         js.executeScript("arguments[0].click();", element);
+        logger.error("Se da clic");
     }
 
 }

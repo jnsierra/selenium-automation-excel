@@ -137,8 +137,15 @@ public class ClickableStepExecutionImpl implements StepExecution {
             logger.error("Error en el elemento (".concat(step.getLabelAccion()).concat(")") + " En la linea de ejecución: ("+step.getIterator()+") Genera excepcion al momento de dar clic. " );
             logger.error("Con el elemento identificador (".concat(step.getFindBy()).concat(")"));
             logger.error(e);
+            clickElemntWithJs(step, element);
         }
 
+    }
+
+    public void clickElemntWithJs(StepAutomationDTO step, WebElement element){
+        logger.error("Se iniciara a dar click con JavaScript al fallar por medio de selenium");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", element);
     }
 
 }
